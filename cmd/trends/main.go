@@ -49,6 +49,16 @@ func main() {
 	defer sub.Unsubscribe()
 
 	mux := http.NewServeMux()
+	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
+		writeJSON(w, http.StatusOK, map[string]any{
+			"service": "search trends",
+			"endpoints": []string{
+				"GET /health",
+				"GET /top?limit=10",
+				"POST /stopwords",
+			},
+		})
+	})
 	mux.HandleFunc("GET /health", func(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
 	})
